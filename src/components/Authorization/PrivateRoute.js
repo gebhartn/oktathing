@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 
 export default ({ component: Component, ...rest }) => (
   <Route
@@ -8,7 +8,7 @@ export default ({ component: Component, ...rest }) => (
       localStorage.getItem('okta-token-storage') ? (
         <Component {...props} />
       ) : (
-        <Redirect to="/login" />
+        <Redirect to="/" />
       )
     }
   />
