@@ -25,7 +25,14 @@ const App = () => (
           path="/login"
           render={() => <Login baseUrl={`${process.env.REACT_APP_OKTA_URL}`} />}
         />
-        <Route exact path="/admin/dashboard" component={MockHomePage} />
+        <Route exact path="/">
+          {localStorage.getItem('okta-token-storage') ? (
+            <Redirect push to="/admin/dashboard" />
+          ) : (
+            <Redirect push to="/login" />
+          )}
+        </Route>
+        <PrivateRoute exact path="/admin/dashboard" component={MockHomePage} />
         <Route path="/implicit/callback" component={ImplicitCallback} />
       </Switch>
     </Security>
