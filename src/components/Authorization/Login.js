@@ -1,39 +1,18 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import React from 'react';
 import { withAuth } from '@okta/okta-react';
-import SignInWidget from './SignInWidget';
 
 export default withAuth(
-  class Login extends Component {
+  class Home extends React.Component {
     constructor(props) {
       super(props);
-      this.onSuccess = this.onSuccess.bind(this);
-      this.onError = this.onError.bind(this);
-      this.state = {
-        authenticated: null,
-      };
+      this.state = { authenticated: null };
+      this.checkAuthentication = this.checkAuthentication.bind(this);
       this.checkAuthentication();
-    }
-
-    componentDidUpdate() {
-      this.checkAuthentication();
-    }
-
-    onSuccess(res) {
-      if (res.status === 'SUCCESS') {
-        // eslint-disable-next-line react/destructuring-assignment
-        return this.props.auth.redirect({
-          sessionToken: res.session.token,
-        });
-      }
-    }
-
-    onError(err) {
-      console.log('error', err);
+      this.login = this.login.bind(this);
+      this.logout = this.logout.bind(this);
     }
 
     async checkAuthentication() {
-      // eslint-disable-next-line react/destructuring-assignment
       const authenticated = await this.props.auth.isAuthenticated();
       // eslint-disable-next-line react/destructuring-assignment
       if (authenticated !== this.state.authenticated) {
@@ -41,19 +20,24 @@ export default withAuth(
       }
     }
 
+    componentDidUpdate() {
+      this.checkAuthentication();
+    }
+
+    async login() {
+      this.props.auth.login('/');
+    }
+
+    async logout() {
+      this.props.auth.logout('/');
+    }
+
     render() {
-      // eslint-disable-next-line react/destructuring-assignment
       if (this.state.authenticated === null) return null;
-      // eslint-disable-next-line react/destructuring-assignment
       return this.state.authenticated ? (
-        <Redirect push to="/" />
+        <button onClick={this.logout}>Logout</button>
       ) : (
-        <SignInWidget
-          // eslint-disable-next-line react/destructuring-assignment
-          baseUrl={this.props.baseUrl}
-          onSuccess={this.onSuccess}
-          onError={this.onError}
-        />
+        <button onClick={this.login}>Login</button>
       );
     }
   }
