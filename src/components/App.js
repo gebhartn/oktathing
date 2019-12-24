@@ -10,6 +10,9 @@ import { Security, ImplicitCallback } from '@okta/okta-react';
 // Login component acts as our landing page
 import Login from './Authorization/Login';
 
+// Import Dashboard for route
+import Dashboard from './Dashboard/Dashboard';
+
 // Security component props
 const config = {
   // Authorization issuer URL -- see OKTA dashboard
@@ -27,7 +30,7 @@ const App = () => (
   <Security {...config}>
     {/* Route to our Landing page at root URL */}
     <Route exact path="/" component={Login} />
-
+    <Route path="/dashboard" component={Dashboard} />
     {/* Route to the authorization component provided by OKTA SDK */}
     <Route path="/implicit/callback" component={ImplicitCallback} />
   </Security>

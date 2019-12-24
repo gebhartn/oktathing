@@ -76,10 +76,10 @@ export default withAuth(
           // eslint-disable-next-line react/destructuring-assignment
           getToken={this.props.auth.getAccessToken}
         />
-      ) : (
-        // eslint-disable-next-line react/button-has-type
-        <button onClick={this.login}>Login</button>
-      );
+      ) : // eslint-disable-next-line react/button-has-type
+      this.login() === undefined ? (
+        <h1>Loading</h1>
+      ) : null;
     }
   }
 );
