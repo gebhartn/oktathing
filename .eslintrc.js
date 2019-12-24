@@ -11,7 +11,9 @@ module.exports = {
     "jest": true,
     "node": true
   },
-  "rules": {
+	"rules": {
+		"react/prop-types": 0,
+		"react/forbid-prop-types": 0,
     "jsx-a11y/href-no-hash": ["off"],
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "max-len": [
