@@ -1,35 +1,19 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import React from 'react';
 import { withAuth } from '@okta/okta-react';
-import SignInWidget from './SignInWidget';
 
 export default withAuth(
-  class Login extends Component {
+  class Home extends React.Component {
     constructor(props) {
       super(props);
-      this.onSuccess = this.onSuccess.bind(this);
-      this.onError = this.onError.bind(this);
-      this.state = {
-        authenticated: null,
-      };
+      this.state = { authenticated: null };
+      this.checkAuthentication = this.checkAuthentication.bind(this);
       this.checkAuthentication();
+      this.login = this.login.bind(this);
+      this.logout = this.logout.bind(this);
     }
 
     componentDidUpdate() {
       this.checkAuthentication();
-    }
-
-    onSuccess(res) {
-      if (res.status === 'SUCCESS') {
-        // eslint-disable-next-line react/destructuring-assignment
-        return this.props.auth.redirect({
-          sessionToken: res.session.token,
-        });
-      }
-    }
-
-    onError(err) {
-      console.log('error', err);
     }
 
     async checkAuthentication() {
@@ -41,19 +25,27 @@ export default withAuth(
       }
     }
 
+    async login() {
+      // eslint-disable-next-line react/destructuring-assignment
+      this.props.auth.login('/');
+    }
+
+    async logout() {
+      localStorage.clear();
+      // eslint-disable-next-line react/destructuring-assignment
+      this.props.auth.logout('/');
+    }
+
     render() {
       // eslint-disable-next-line react/destructuring-assignment
       if (this.state.authenticated === null) return null;
       // eslint-disable-next-line react/destructuring-assignment
       return this.state.authenticated ? (
-        <Redirect push to="/" />
+        // eslint-disable-next-line react/button-has-type
+        <button onClick={this.logout}>Logout</button>
       ) : (
-        <SignInWidget
-          // eslint-disable-next-line react/destructuring-assignment
-          baseUrl={this.props.baseUrl}
-          onSuccess={this.onSuccess}
-          onError={this.onError}
-        />
+        // eslint-disable-next-line react/button-has-type
+        <button onClick={this.login}>Login</button>
       );
     }
   }
