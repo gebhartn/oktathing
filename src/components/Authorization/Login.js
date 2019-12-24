@@ -12,7 +12,12 @@ export default withAuth(
       this.logout = this.logout.bind(this);
     }
 
+    componentDidUpdate() {
+      this.checkAuthentication();
+    }
+
     async checkAuthentication() {
+      // eslint-disable-next-line react/destructuring-assignment
       const authenticated = await this.props.auth.isAuthenticated();
       // eslint-disable-next-line react/destructuring-assignment
       if (authenticated !== this.state.authenticated) {
@@ -20,23 +25,26 @@ export default withAuth(
       }
     }
 
-    componentDidUpdate() {
-      this.checkAuthentication();
-    }
-
     async login() {
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.auth.login('/');
     }
 
     async logout() {
+      localStorage.clear();
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.auth.logout('/');
     }
 
     render() {
+      // eslint-disable-next-line react/destructuring-assignment
       if (this.state.authenticated === null) return null;
+      // eslint-disable-next-line react/destructuring-assignment
       return this.state.authenticated ? (
+        // eslint-disable-next-line react/button-has-type
         <button onClick={this.logout}>Logout</button>
       ) : (
+        // eslint-disable-next-line react/button-has-type
         <button onClick={this.login}>Login</button>
       );
     }
