@@ -5,6 +5,10 @@ import { withAuth } from '@okta/okta-react';
 // Dashboard component, will conditionally render on success
 import Dashboard from '../Dashboard/Dashboard';
 
+function renderLogin(fn) {
+  return fn() === undefined ? <h1>Loading</h1> : null;
+}
+
 export default withAuth(
   class Home extends React.Component {
     constructor(props) {
@@ -76,10 +80,9 @@ export default withAuth(
           // eslint-disable-next-line react/destructuring-assignment
           getToken={this.props.auth.getAccessToken}
         />
-      ) : // eslint-disable-next-line react/button-has-type
-      this.login() === undefined ? (
-        <h1>Loading</h1>
-      ) : null;
+      ) : (
+        renderLogin(this.login)
+      );
     }
   }
 );
