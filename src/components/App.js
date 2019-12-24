@@ -5,13 +5,10 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 
 // Security wrapper, ImplicitCallback is OKTA's authorization component
-import { Security, ImplicitCallback } from '@okta/okta-react';
+import { Security, ImplicitCallback, SecureRoute } from '@okta/okta-react';
 
 // Login component acts as our landing page
 import Login from './Authorization/Login';
-
-// Import Dashboard for route
-import Dashboard from './Dashboard/Dashboard';
 
 // Security component props
 const config = {
@@ -29,8 +26,7 @@ const App = () => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <Security {...config}>
     {/* Route to our Landing page at root URL */}
-    <Route exact path="/" component={Login} />
-    <Route path="/dashboard" component={Dashboard} />
+    <SecureRoute exact path="/" component={Login} />
     {/* Route to the authorization component provided by OKTA SDK */}
     <Route path="/implicit/callback" component={ImplicitCallback} />
   </Security>
